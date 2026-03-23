@@ -10,7 +10,6 @@
       <path d="M0,0 L10,5 L0,10 Z" fill="#666"/>
     </marker>
   </defs>
-  <!-- nodes and edges -->
 </svg>
 ```
 
@@ -18,20 +17,18 @@ Always define `<defs>` first so arrow markers are available during streaming.
 
 ## Node Types
 
-**Default box:**
+**Default box (use inline style for CSS variable support):**
 ```html
 <rect x="50" y="50" width="130" height="44" rx="6"
-      fill="#1a1a1a" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-<text x="115" y="77" text-anchor="middle" fill="#e8e8e8" font-size="13"
-      font-family="system-ui,sans-serif">Node Label</text>
+      style="fill:var(--color-surface);stroke:var(--color-border);stroke-width:1"/>
+<text x="115" y="77" text-anchor="middle" style="fill:var(--color-text);font-size:13;font-family:system-ui,sans-serif">Node Label</text>
 ```
 
-**Accented box (highlighted):**
+**Accented box:**
 ```html
 <rect x="50" y="50" width="130" height="44" rx="6"
-      fill="rgba(124,58,237,0.15)" stroke="#7c3aed" stroke-width="1.5"/>
-<text x="115" y="77" text-anchor="middle" fill="#a78bfa" font-size="13"
-      font-family="system-ui,sans-serif">Highlighted</text>
+      style="fill:var(--color-accent-light);fill-opacity:0.15;stroke:var(--color-accent);stroke-width:1.5"/>
+<text x="115" y="77" text-anchor="middle" style="fill:var(--color-accent-light);font-size:13;font-family:system-ui,sans-serif">Highlighted</text>
 ```
 
 **Success / Warning / Danger:**

@@ -24,6 +24,8 @@ export ANTHROPIC_API_KEY=your_api_key_here
 ### Running the App
 
 ```bash
+# Must run from the generative-ui-demo subdirectory (where server.py lives)
+cd generative-ui-demo/generative-ui-demo
 uvicorn server:app --reload
 ```
 

@@ -1,47 +1,54 @@
 # Core Design System
 
-## HTML Structure
-- HTML fragments only — no DOCTYPE, <html>, <head>, or <body>
-- Streaming order: `<style>` → content HTML → `<script>` (critical for smooth streaming)
-- No comments (`<!-- -->` or `/* */`) — waste tokens during streaming
-- No `display:none` sections, tabs, or carousels during streaming — stack content vertically
-- Scripts execute after streaming completes — safe to use CDN globals in a trailing `<script>`
+## JSON DSL (when using show_widget with widget_config)
 
-## CSS Variables (mandatory — never hardcode colors)
+Output format: `{ "version": 1, "children": [WidgetNode, ...] }`
+
+WidgetNode: `{ "id"?, "component": string, "props"?, "style"?, "className"?, "children"?: (WidgetNode|string)[] }`
+
+Layout primitives: Box, Flex, Grid, Stack, Sidebar, Split, Tabs, Collapse
+
+Components: MetricCard, BarChart, LineChart, PieChart, DataTable, SearchForm, FormRenderer, StatusTag, RawHTML
+
+**For configuration forms, filters, or data entry:** Use FormRenderer. Call `load_components(['FormRenderer'])` to get its props, field types, and visibleWhen examples before show_widget.
+
+### Customization decision tree
+
+1. Can it be done by adjusting props? (color, size, columns) → Pass props directly
+2. Need to add other components beside/above/below? → Use Wrapper (Flex/Grid/Stack)
+3. Need different behavior? (expandable row, stacked chart) → Check for variant component name
+4. Need a form (config, filter, data entry)? → Use FormRenderer, load_components(['FormRenderer'])
+5. Completely outside component library? → Use RawHTML fallback
+
+### Tabs structure
+
+```json
+{"component":"Tabs","props":{"defaultTab":"cat","tabs":[{"label":"By Category","key":"cat","content":{...WidgetNode}}]}}
+```
+
+## HTML mode (when using show_widget with widget_code)
+
+- HTML fragments only — no DOCTYPE, <html>, <head>, or <body>
+- Streaming order: `<style>` → content HTML → `<script>`
+- No comments — waste tokens during streaming
+- Use ONLY CSS variables for colors
+
+## CSS Variables
+
 | Variable | Purpose |
 |---|---|
 | `--color-bg` | Page background |
 | `--color-surface` | Card / panel background |
 | `--color-surface-elevated` | Elevated panel |
 | `--color-text` | Primary text |
-| `--color-text-muted` | Secondary / hint text |
+| `--color-text-muted` | Secondary text |
 | `--color-accent` | Purple highlight |
 | `--color-accent-light` | Lighter purple |
-| `--color-border` | Subtle borders |
+| `--color-border` | Borders |
 | `--color-success` | Green |
 | `--color-warning` | Amber |
 | `--color-danger` | Red |
 
-## Typography
-- `h1`: 22px, weight 500
-- `h2`: 18px, weight 500
-- `h3`: 16px, weight 500
-- Body: 16px, weight 400, line-height 1.6
-- Labels/captions: 13px
-- Never below 11px
-
-## Design Rules
-- **Flat design only** — no gradients, box-shadow, blur, text-shadow, or glow
-- No outer background color on root container — host provides the page background
-- Border radius: 6px (small), 10px (medium), 16px (large/cards)
-- CDN allowed: `cdnjs.cloudflare.com`, `cdn.jsdelivr.net`, `unpkg.com`, `esm.sh` only
-
 ## Two-Way Communication
-`window.sendToAgent(data)` — sends JSON data back to chat as a user message.
 
-```html
-<button onclick="sendToAgent({action:'filter', value:'weekly'})">Weekly</button>
-<select onchange="sendToAgent({selected: this.value})">...</select>
-```
-
-Use it for: filter selections, form submissions, quiz answers, calculator results to analyze.
+`window.sendToAgent(data)` — sends JSON back to chat. Use for: filters, form submit, selections.

@@ -623,22 +623,18 @@ async function doSend(overrideText) {
             }
             break;
 
-          // ── Widget streaming (html or json_dsl with RawHTML) ────────
+          // ── Widget HTML streaming in, token by token ───────────────
           case 'widget_delta':
             setStatus(true, 'Rendering...');
-            const deltaHtml = ev.html || (ev.parsed?.children?.find(c => c?.component === 'RawHTML')?.props?.html);
-            if (deltaHtml) scheduleRender(deltaHtml);
+            scheduleRender(ev.html);
             break;
 
           // ── Widget complete — final HTML + run scripts ─────────────
           case 'widget_final':
             if (renderTimer) { clearTimeout(renderTimer); renderTimer = null; }
             widgetName.textContent = ev.title || 'Widget';
-            const finalHtml = ev.html || (ev.mode === 'json_dsl' && ev.parsed?.children?.find(c => c?.component === 'RawHTML')?.props?.html);
-            if (finalHtml) {
-              renderWidget(finalHtml);
-              runScripts();
-            }
+            renderWidget(ev.html);
+            runScripts();
             setStatus(false, 'Ready');
             break;
 

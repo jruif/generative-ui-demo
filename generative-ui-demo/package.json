@@ -1,0 +1,27 @@
+{
+  "name": "generative-ui-demo",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "gen-docs": "ts-node scripts/generate-component-docs.ts"
+  },
+  "dependencies": {
+    "@arco-design/web-react": "^2.66.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.6.2",
+    "vite": "^5.4.10"
+  }
+}

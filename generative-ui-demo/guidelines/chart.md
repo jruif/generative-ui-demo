@@ -1,5 +1,7 @@
 # Charts with Chart.js
 
+Chart.js config requires literal color values (hex/rgba). CSS variables are not supported in Chart.js options. Use the hex values from the palette below.
+
 ## Loading
 ```html
 <canvas id="chart" style="width:100%;max-height:380px"></canvas>
@@ -15,7 +17,7 @@ Always load Chart.js via `<script src>` first, then your `<script>` block after.
 ## Base Config Template
 ```javascript
 {
-  type: 'bar', // bar | line | pie | doughnut | radar | scatter
+  type: 'bar',
   data: {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
     datasets: [{
